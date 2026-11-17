@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-display: "Fraunces", "ZCOOL XiaoWei", "Songti SC", serif;
+  --color-ink: #2a2118;
+  --color-cream: #fff6ec;
+  --color-paper: #fffaf4;
+  --color-line: #f0d7cc;
+  --color-coral: #e36a45;
+  --color-coral-deep: #c4512f;
+  --color-moss: #234233;
+  --color-moss-lite: #3f6b56;
+  --color-gold: #e7b15a;
+  --animate-bob: bob 3.6s ease-in-out infinite;
+  --animate-blink: blink 5s infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    padding: 0.625rem 1rem;
+    transition: transform 150ms ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+  }
+  .btn-solid { background: var(--color-coral); color: white; }
+  .btn-ghost { border-color: var(--color-line); background: white; color: var(--color-ink); }
+  .btn-text { border-color: transparent; background: transparent; padding-inline: 0.75rem; }
+  .chip {
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: white;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+  .panel {
+    min-height: 0;
+    border-radius: 28px;
+    border: 1px solid color-mix(in srgb, var(--color-line) 90%, transparent);
+    background: var(--color-paper);
+    padding: 1.25rem;
+    box-shadow: 0 24px 50px rgba(42, 33, 24, 0.12);
+  }
+  .control {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid var(--color-line);
+    background: white;
+    padding: 0.75rem;
+    font-size: 1rem;
+    color: var(--color-ink);
+  }
+}
+
+@media (min-width: 1024px) {
+  .panel { min-height: 640px; }
+}
