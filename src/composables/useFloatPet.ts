@@ -14,17 +14,17 @@ type Nodes = {
 };
 
 const PIP_CSS = `
-  html, body { margin: 0; height: 100%; background: #234233; color: #fff6ec; font-family: "Microsoft YaHei", sans-serif; }
+  html, body { margin: 0; height: 100%; background: #031018; color: #e7f6ff; font-family: "Microsoft YaHei", sans-serif; }
   body { display: flex; }
-  .card { flex: 1; display: flex; flex-direction: column; padding: 16px; gap: 12px; }
+  .card { flex: 1; display: flex; flex-direction: column; padding: 16px; gap: 12px; background: radial-gradient(circle at 50% 30%, rgba(40,170,255,.28), transparent 46%), #031018; }
   .figure { flex: 1; display: grid; place-items: center; }
   img, svg { width: min(100%, 220px); height: auto; }
-  img { filter: drop-shadow(0 16px 24px rgba(0,0,0,.28)); }
-  strong { font-size: 18px; }
+  img { filter: drop-shadow(0 16px 24px rgba(0,180,255,.35)); }
+  strong { font-size: 18px; letter-spacing: 0.04em; }
   p { margin: 0; line-height: 1.45; min-height: 2.8em; }
   form { display: flex; gap: 8px; }
-  input { flex: 1; border: 0; border-radius: 999px; padding: 10px 12px; }
-  button { border: 0; border-radius: 999px; background: #e36a45; color: white; padding: 0 14px; }
+  input { flex: 1; border: 1px solid rgba(125,236,255,.4); border-radius: 2px; background: #041018; color: #e7f6ff; padding: 10px 12px; }
+  button { border: 0; border-radius: 2px; background: #35d7ff; color: #041018; font-weight: 700; padding: 0 14px; }
 `;
 
 export function useFloatPet(onSend: (text: string) => void) {
@@ -99,6 +99,6 @@ export function useFloatPet(onSend: (text: string) => void) {
 function dumpling(doc: Document) {
   const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("viewBox", "0 0 160 150");
-  svg.innerHTML = `<ellipse cx="80" cy="92" rx="52" ry="42" fill="#E36A45"/><circle cx="48" cy="48" r="18" fill="#E36A45"/><circle cx="112" cy="48" r="18" fill="#E36A45"/><circle cx="64" cy="88" r="5" fill="#2A2118"/><circle cx="96" cy="88" r="5" fill="#2A2118"/><path d="M68 104c6 8 18 8 24 0" fill="none" stroke="#2A2118" stroke-width="4" stroke-linecap="round"/>`;
+  svg.innerHTML = `<ellipse cx="80" cy="92" rx="52" ry="42" fill="#35d7ff"/><circle cx="48" cy="48" r="18" fill="#35d7ff"/><circle cx="112" cy="48" r="18" fill="#35d7ff"/><circle cx="64" cy="88" r="5" fill="#041018"/><circle cx="96" cy="88" r="5" fill="#041018"/><path d="M68 104c6 8 18 8 24 0" fill="none" stroke="#041018" stroke-width="4" stroke-linecap="round"/>`;
   return svg;
 }

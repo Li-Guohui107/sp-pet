@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import { deleteImage } from "@/api/client";
 import ChatPanel from "@/components/ChatPanel.vue";
 import DesktopOrganizer from "@/components/DesktopOrganizer.vue";
@@ -48,6 +48,19 @@ const line = computed(() => {
 
 const chatReady = computed(() => Boolean(state.deepseekKey.trim()) || Boolean(health.value?.deepseekEnv));
 const imageReady = computed(() => Boolean(state.dashscopeKey.trim()) || Boolean(health.value?.dashscopeEnv));
+const now = ref(new Date());
+let clockTimer = 0;
+const clockText = computed(() => now.value.toLocaleTimeString("zh-CN", { hour12: false }));
+const dateText = computed(() =>
+  now.value.toLocaleDateString("zh-CN", { month: "2-digit", day: "2-digit", weekday: "short" }),
+);
+
+onMounted(() => {
+  clockTimer = window.setInterval(() => {
+    now.value = new Date();
+  }, 1000);
+});
+onUnmounted(() => window.clearInterval(clockTimer));
 
 watchEffect(() => {
   floatPet.snapshot.value = {
@@ -100,29 +113,40 @@ function toggleStep(taskId: string, index: number) {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[radial-gradient(circle_at_8%_0%,rgba(227,106,69,0.18),transparent_28%),radial-gradient(circle_at_90%_10%,rgba(231,177,90,0.28),transparent_26%),var(--color-cream)] px-4 py-7 text-ink sm:px-8">
-    <header class="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center">
-      <div class="flex items-center gap-3.5">
-        <img src="/favicon.svg" alt="" width="42" height="42" class="rounded-2xl shadow-[0_24px_50px_rgba(42,33,24,0.12)]" />
+  <div class="screen">
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">SP</span>
         <div>
-          <h1 class="font-display text-3xl font-medium">超级宠物</h1>
-          <p class="mt-1 text-ink/70">住在桌面上，帮你聊天、收拾文件夹、把手机上的事拆开。</p>
+          <p class="kicker">Pet Command / 01</p>
+          <h1 class="font-display text-2xl tracking-wide sm:text-3xl">超级宠物</h1>
         </div>
       </div>
+      <div class="text-right">
+        <p class="clock">{{ clockText }}</p>
+        <p class="kicker mt-1">{{ dateText }}</p>
+      </div>
       <div class="flex flex-wrap items-center gap-2">
-        <span class="rounded-full border px-2.5 py-1.5 text-[13px]" :class="chatReady ? 'border-[#cfe3d4] bg-[#edf6ef]' : 'border-line bg-white'">
-          {{ chatReady ? "对话就绪" : "对话待配置" }}
+        <span class="status" :class="chatReady ? 'status-on' : ''">
+          <i></i>{{ chatReady ? "对话就绪" : "对话待配置" }}
         </span>
-        <span class="rounded-full border px-2.5 py-1.5 text-[13px]" :class="imageReady ? 'border-[#cfe3d4] bg-[#edf6ef]' : 'border-line bg-white'">
-          {{ imageReady ? "形象就绪" : "形象待配置" }}
+        <span class="status" :class="imageReady ? 'status-on' : ''">
+          <i></i>{{ imageReady ? "形象就绪" : "形象待配置" }}
         </span>
-        <button type="button" class="btn-ghost" @click="settingsOpen = true">密钥</button>
+        <button type="button" class="btn btn-ghost" @click="settingsOpen = true">密钥</button>
       </div>
     </header>
+    <div class="ticker">
+      <span>SYS.ONLINE</span>
+      <span>NODE 127.0.0.1</span>
+      <span>LINK DEEPSEEK</span>
+      <span>RENDER QWEN-IMAGE</span>
+      <span>MODULE 04</span>
+    </div>
 
-    <p v-if="offline" class="mt-4 rounded-2xl border border-[#f0c2b4] bg-[#fff1ea] px-3 py-2.5 leading-relaxed">{{ offline }}</p>
+    <p v-if="offline" class="alert mt-4 leading-relaxed">{{ offline }}</p>
 
-    <main class="mt-6 grid items-start gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
+    <main class="mt-4 grid items-start gap-4 lg:grid-cols-[380px_minmax(0,1fr)]">
       <PetStage
         :name="state.name"
         :image-url="state.imageUrl"

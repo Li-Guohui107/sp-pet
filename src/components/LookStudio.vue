@@ -41,12 +41,15 @@ function addStyle(item: string) {
 
 <template>
   <section class="panel" aria-label="形象">
-    <header class="mb-4">
-      <h2 class="font-display text-2xl">形象</h2>
-      <p class="mt-1 text-ink/70">描述想要的样子。生成走通义千问 Qwen-Image 系列，图片会保存在这台电脑上。</p>
+    <header class="panel-head">
+      <div>
+        <p class="kicker">02 / Render</p>
+        <h2 class="text-2xl">形象</h2>
+        <p class="mt-1 text-ink/70">描述想要的样子。生成走通义千问 Qwen-Image 系列，图片会保存在这台电脑上。</p>
+      </div>
     </header>
     <div class="flex flex-wrap gap-2">
-      <button v-for="item in presets" :key="item" type="button" class="chip" :class="prompt === item ? 'outline-2 outline-coral' : ''" @click="prompt = item">
+      <button v-for="item in presets" :key="item" type="button" class="chip" :class="prompt === item ? 'chip-on' : ''" @click="prompt = item">
         {{ item }}
       </button>
     </div>
@@ -64,20 +67,20 @@ function addStyle(item: string) {
           <option v-for="item in models" :key="item.id" :value="item.id">{{ item.label }}</option>
         </select>
       </label>
-      <button type="button" class="btn-solid" :disabled="busy || prompt.trim().length < 2" @click="emit('generate')">
+      <button type="button" class="btn btn-solid" :disabled="busy || prompt.trim().length < 2" @click="emit('generate')">
         {{ running ? "正在画…" : "生成形象" }}
       </button>
     </div>
-    <p v-if="error" class="mt-3 rounded-2xl border border-[#f0c2b4] bg-[#fff1ea] px-3 py-2.5">{{ error }}</p>
+    <p v-if="error" class="alert mt-3">{{ error }}</p>
     <div class="mt-4 grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-3">
-      <figure v-for="item in gallery" :key="item.id" class="overflow-hidden rounded-[18px] border border-line bg-white" :class="item.url === currentUrl ? 'outline-2 outline-coral' : ''">
-        <img :src="item.url" :alt="item.prompt" class="h-40 w-full bg-[#f6efe6] object-cover" />
+      <figure v-for="item in gallery" :key="item.id" class="card overflow-hidden p-0" :class="item.url === currentUrl ? 'is-current' : ''">
+        <img :src="item.url" :alt="item.prompt" class="h-40 w-full bg-[#041018] object-cover" />
         <figcaption class="flex flex-col gap-1.5 p-2.5">
           <p class="leading-snug">{{ item.prompt }}</p>
           <small class="text-ink/70">{{ item.model }}</small>
           <span class="flex gap-2">
-            <button type="button" class="rounded-full bg-cream px-2 py-1.5" @click="emit('use', item.url)">用这张</button>
-            <button type="button" class="rounded-full bg-cream px-2 py-1.5" @click="emit('delete', item)">移除</button>
+            <button type="button" class="mini" @click="emit('use', item.url)">用这张</button>
+            <button type="button" class="mini" @click="emit('delete', item)">移除</button>
           </span>
         </figcaption>
       </figure>

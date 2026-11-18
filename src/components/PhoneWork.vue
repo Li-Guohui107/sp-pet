@@ -34,9 +34,12 @@ function copy(task: PhoneTask) {
 
 <template>
   <section class="panel" aria-label="手机办事">
-    <header class="mb-4">
-      <h2 class="font-display text-2xl">办事</h2>
-      <p class="mt-1 text-ink/70">把要在自己手机上完成的事交给我。我会拆成步骤，发送、付款和删除会停下来等你点头。密码和验证码留给你自己输入。</p>
+    <header class="panel-head">
+      <div>
+        <p class="kicker">04 / Task</p>
+        <h2 class="text-2xl">办事</h2>
+        <p class="mt-1 text-ink/70">把要在自己手机上完成的事交给我。我会拆成步骤，发送、付款和删除会停下来等你点头。密码和验证码留给你自己输入。</p>
+      </div>
     </header>
     <form @submit.prevent="emit('plan')">
       <label class="flex flex-col gap-1.5 text-sm text-ink/70">
@@ -44,15 +47,15 @@ function copy(task: PhoneTask) {
         <textarea v-model="draft" rows="3" class="control resize-y" aria-label="要在手机上完成的事" placeholder="例如：打开备忘录，记下明天下午三点开会" />
       </label>
       <div class="mt-3 flex flex-wrap gap-2">
-        <button type="submit" class="btn-solid" :disabled="busy || draft.trim().length < 2">
+        <button type="submit" class="btn btn-solid" :disabled="busy || draft.trim().length < 2">
           {{ running ? "正在拆步骤…" : "拆成步骤" }}
         </button>
-        <button type="button" class="btn-ghost" @click="draft = '打开备忘录，记下明天下午三点开会'">填一个例子</button>
+        <button type="button" class="btn btn-ghost" @click="draft = '打开备忘录，记下明天下午三点开会'">填一个例子</button>
       </div>
     </form>
-    <p v-if="error" class="mt-3 rounded-2xl border border-[#f0c2b4] bg-[#fff1ea] px-3 py-2.5">{{ error }}</p>
+    <p v-if="error" class="alert mt-3">{{ error }}</p>
     <div class="mt-4 flex flex-col gap-3">
-      <article v-for="task in tasks" :key="task.id" class="rounded-[20px] border border-line bg-white p-3.5">
+      <article v-for="task in tasks" :key="task.id" class="card">
         <template v-if="task.plan.refused">
           <h3 class="font-display text-xl">这件我先停一下</h3>
           <p class="mt-1">{{ task.plan.reason }}</p>
@@ -63,11 +66,11 @@ function copy(task: PhoneTask) {
               {{ task.plan.app }}
               <small class="font-sans text-sm font-normal text-ink/70">{{ task.plan.goal }}</small>
             </h3>
-            <button type="button" class="btn-text" @click="copy(task)">{{ copied.includes(task.id) ? "已复制" : "复制步骤" }}</button>
+            <button type="button" class="btn btn-text" @click="copy(task)">{{ copied.includes(task.id) ? "已复制" : "复制步骤" }}</button>
           </header>
           <p v-if="task.plan.summary" class="mt-2">{{ task.plan.summary }}</p>
           <ol class="mt-2 flex list-none flex-col gap-2 p-0">
-            <li v-for="(step, index) in task.plan.steps" :key="`${step.title}-${index}`" class="rounded-[14px] p-2" :class="step.needsConfirm ? 'bg-[#fff3df]' : 'bg-paper'">
+            <li v-for="(step, index) in task.plan.steps" :key="`${step.title}-${index}`" class="step" :class="step.needsConfirm ? 'step-hold' : ''">
               <label class="flex items-start gap-2.5">
                 <input :checked="task.done.includes(index)" type="checkbox" @change="emit('toggle', task.id, index)" />
                 <span>

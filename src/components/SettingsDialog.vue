@@ -38,11 +38,14 @@ function save() {
 </script>
 
 <template>
-  <div class="fixed inset-0 grid place-items-center bg-ink/35 p-4" @mousedown.self="emit('close')">
-    <form class="max-h-[calc(100vh-36px)] w-full max-w-[520px] overflow-auto rounded-[28px] border border-line bg-paper p-4 shadow-[0_24px_50px_rgba(42,33,24,0.12)]" role="dialog" aria-labelledby="settings-title" @submit.prevent="save">
-      <header class="mb-3 flex items-center justify-between">
-        <h2 id="settings-title" class="font-display text-2xl">宠物和密钥</h2>
-        <button type="button" class="btn-text" @click="emit('close')">关闭</button>
+  <div class="dialog-back" @mousedown.self="emit('close')">
+    <form class="panel dialog" role="dialog" aria-labelledby="settings-title" @submit.prevent="save">
+      <header class="panel-head">
+        <div>
+          <p class="kicker">Config</p>
+          <h2 id="settings-title" class="text-2xl">宠物和密钥</h2>
+        </div>
+        <button type="button" class="btn btn-text" @click="emit('close')">关闭</button>
       </header>
       <label class="mb-3 flex flex-col gap-1.5 text-sm text-ink/70">
         宠物名字
@@ -77,8 +80,8 @@ function save() {
       </label>
       <p class="mb-3 text-sm text-ink/70">密钥保存在这台浏览器里，只发给本机上的超级宠物服务，再由它去调用 DeepSeek 和百炼。</p>
       <div class="flex gap-2">
-        <button type="button" class="btn-ghost" @click="showKeys = !showKeys">{{ showKeys ? "隐藏密钥" : "显示密钥" }}</button>
-        <button type="submit" class="btn-solid">保存</button>
+        <button type="button" class="btn btn-ghost" @click="showKeys = !showKeys">{{ showKeys ? "隐藏密钥" : "显示密钥" }}</button>
+        <button type="submit" class="btn btn-solid">保存</button>
       </div>
     </form>
   </div>

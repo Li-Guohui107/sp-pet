@@ -4,8 +4,8 @@
   "description": "住在桌面上的超级宠物",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFF6EC",
-  "theme_color": "#2A2118",
+  "background_color": "#03070e",
+  "theme_color": "#03070e",
   "lang": "zh-CN",
   "icons": [
     {

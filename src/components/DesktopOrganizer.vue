@@ -93,35 +93,38 @@ function countOf(name: string) {
 
 <template>
   <section class="panel" aria-label="整理桌面">
-    <header class="mb-4">
-      <h2 class="font-display text-2xl">整理</h2>
-      <p class="mt-1 text-ink/70">选择一个文件夹，例如桌面。我只移动最外面一层的散落文件，放进按类型命名的子文件夹。</p>
+    <header class="panel-head">
+      <div>
+        <p class="kicker">03 / Sort</p>
+        <h2 class="text-2xl">整理</h2>
+        <p class="mt-1 text-ink/70">选择一个文件夹，例如桌面。我只移动最外面一层的散落文件，放进按类型命名的子文件夹。</p>
+      </div>
     </header>
     <div class="flex flex-wrap gap-2">
-      <button type="button" class="btn-solid" @click="connect(false)">{{ folder ? "换一个文件夹" : "选择文件夹" }}</button>
-      <button v-if="folder" type="button" class="btn-ghost" @click="connect(true)">重新读取「{{ folder.name }}」</button>
+      <button type="button" class="btn btn-solid" @click="connect(false)">{{ folder ? "换一个文件夹" : "选择文件夹" }}</button>
+      <button v-if="folder" type="button" class="btn btn-ghost" @click="connect(true)">重新读取「{{ folder.name }}」</button>
     </div>
-    <p v-if="error" class="mt-3 rounded-2xl border border-[#f0c2b4] bg-[#fff1ea] px-3 py-2.5">{{ error }}</p>
-    <p v-if="busy" class="mt-3 rounded-2xl border border-line bg-[#f7f1e6] px-3 py-2.5">{{ busy }}</p>
+    <p v-if="error" class="alert mt-3">{{ error }}</p>
+    <p v-if="busy" class="alert-busy mt-3">{{ busy }}</p>
 
     <template v-if="folder">
       <div class="mt-3 flex flex-wrap gap-2">
-        <label v-for="name in CATEGORY_NAMES" v-show="countOf(name)" :key="name" class="flex items-center gap-1.5 rounded-full bg-cream px-2 py-1.5">
+        <label v-for="name in CATEGORY_NAMES" v-show="countOf(name)" :key="name" class="tag">
           <input v-model="checked[name]" type="checkbox" />
           {{ name }}
           <small class="text-ink/70">{{ countOf(name) }}</small>
         </label>
       </div>
       <ul class="mt-2 mb-3.5 flex max-h-72 flex-col gap-1.5 overflow-auto">
-        <li v-for="file in files" :key="file.name" class="flex justify-between gap-3 rounded-[14px] bg-white px-2.5 py-2">
+        <li v-for="file in files" :key="file.name" class="row">
           <b>{{ file.name }}</b>
           <span class="text-ink/70">{{ file.category }}</span>
         </li>
       </ul>
       <p v-if="!files.length" class="text-ink/70">这一层已经收进分类文件夹了。</p>
-      <button type="button" class="btn-solid" :disabled="!chosen.length || Boolean(busy)" @click="tidy">移动 {{ chosen.length }} 个文件</button>
+      <button type="button" class="btn btn-solid" :disabled="!chosen.length || Boolean(busy)" @click="tidy">移动 {{ chosen.length }} 个文件</button>
     </template>
-    <div v-else class="mt-3 rounded-[14px] bg-white px-2.5 py-2">
+    <div v-else class="stack mt-3">
       <p>还没选文件夹。下面是分类会怎么落位：</p>
       <p v-for="[name, items] in sampleGroups" :key="name" class="mt-1.5">
         <b>{{ name }}</b>
@@ -129,7 +132,7 @@ function countOf(name: string) {
       </p>
     </div>
     <ul v-if="report.length" class="mt-3 flex flex-col gap-1.5">
-      <li v-for="line in report" :key="line" class="rounded-[14px] bg-white px-2.5 py-2">{{ line }}</li>
+      <li v-for="line in report" :key="line" class="row">{{ line }}</li>
     </ul>
   </section>
 </template>
